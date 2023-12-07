@@ -1,8 +1,8 @@
 # Use Alpine Linux as the base image
 FROM alpine:latest
 
-# Install necessary packages including ffmpeg, Python, Git, build dependencies
-RUN apk add --no-cache ffmpeg python3 py3-pip fontconfig ttf-dejavu su-exec git && \
+# Install necessary packages including ffmpeg, Python, Git, build dependencies, and tzdata for timezone data
+RUN apk add --no-cache ffmpeg python3 py3-pip fontconfig ttf-dejavu su-exec git tzdata && \
     apk add --no-cache --virtual .build-deps gcc python3-dev musl-dev libffi-dev openssl-dev cargo
 
 # Install Poetry
@@ -20,6 +20,10 @@ RUN poetry build && \
 # Clean up build dependencies
 RUN apk del .build-deps
 
+# Set the timezone to EST
+RUN ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime && \
+    echo "America/New_York" > /etc/timezone
+
 WORKDIR /
 
 # Add your scripts to the container
@@ -32,5 +36,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/run.sh
 COPY run.sh /etc/periodic/daily/run
 RUN chmod +x /etc/periodic/daily/run
 
-# Start the cron daemon
+# Start the cron daemon with the EST timezone
 CMD ["crond", "-f", "-l", "2"]
