@@ -1,5 +1,5 @@
 # Use Alpine Linux as the base image
-FROM alpine:latest
+FROM alpine:3.18
 
 # Install necessary packages including ffmpeg, Python, Git, build dependencies, and tzdata for timezone data
 RUN apk add --no-cache ffmpeg python3 py3-pip fontconfig ttf-dejavu su-exec git tzdata && \
@@ -32,9 +32,10 @@ COPY run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/run.sh
 
 # Setup Cron
-# Move the script to the daily cron jobs directory
-COPY run.sh /etc/periodic/daily/run
-RUN chmod +x /etc/periodic/daily/run
+# Move the script to the weekly cron jobs directory
+COPY run.sh /etc/periodic/weekly/run
+RUN chmod +x /etc/periodic/weekly/run
 
 # Start the cron daemon with the EST timezone
-CMD ["crond", "-f", "-l", "2"]
+# The -l 8 flag sets the logging level to 8, which logs only started processes and their outputs
+CMD ["crond", "-f", "-l", "8"]

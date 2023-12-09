@@ -1,7 +1,7 @@
 # Docker-VCSI
 
 ## Overview
-Docker-VCSI is a Docker-based solution designed to automate the generation of video thumbnail sheets on Synology NAS systems or any Docker-compatible environment. It scans a designated directory for `.mov`, `.MOV`, `.mp4`, and `.MP4` files and generates thumbnail sheets using `vcsi`. This process is scheduled as a cron job within the Docker container.
+Docker-VCSI is a Docker-based solution designed to automate the generation of video thumbnail sheets on Synology NAS systems or any Docker-compatible environment. It scans a designated directory for `.mov`, `.MOV`, `.mp4`, and `.MP4` files and generates thumbnail sheets using `vcsi`. This process is scheduled as a weekly cron job within the Docker container.
 
 ## Features
 - Automatically generates thumbnail sheets for video files.
